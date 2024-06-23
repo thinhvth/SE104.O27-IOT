@@ -2,6 +2,7 @@ import mysql from 'mysql2'
 import mqtt from 'mqtt'
 import fs from 'fs'
 import {format} from 'date-fns'
+import dotenv from 'dotenv';
 import IotDevices from './models/iot_devices.js'
 import sequelize from './configs/database.js'
 import { v4 as uuidv4 } from 'uuid';
@@ -9,9 +10,9 @@ function getcurrenttime(){
     return format(new Date(),'yyyy-MM-dd HH:mm:ss')
 }
 var connection=mysql.createConnection({
-    host: 'ecosync-ecosync.f.aivencloud.com',
-    user: 'avnadmin',
-    password:'AVNS_A7a4SSPysBOacl6YCmf',
+    host: process.env.MYSQL_HOST,
+    user: process.env.MYSQL_USERNAME,
+    password: process.env.MYSQL_PASSWORD,
     port: 26007,
     database: 'ecosync',
 })
@@ -27,8 +28,8 @@ const CA_CERT=fs.readFileSync('./emqx-ca.pem')
 const host = 'wss://oe9219e1.ala.eu-central-1.emqxsl.com:8084/mqtt'
 const options={
     clientId: "web-server",
-    username: 'thinh',
-    password: '6wbF6MbDLF8fEFT',
+    username: process.env.MQTT_USERNAME,
+    password: process.env.MQTT_PASSWORD,
     rejectUnauthorized:true,
     ca:CA_CERT,
 }
